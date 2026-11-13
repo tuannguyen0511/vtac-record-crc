@@ -1,0 +1,24 @@
+# P05-T05a, Director authorization on 2026-11-11. No test access.
+step: P05-T05a
+approval: T05A_AUTHORIZED
+primary_variant: A
+secondary_variants: [B, C, D, E]
+backbone: resnet1d
+seeds: [0, 1, 2, 3, 4]
+alpha_levels: [0.005, 0.01, 0.02, 0.05]
+alpha_primary: 0.02
+cp_confidence: 0.95
+ltt_alpha: 0.05
+ltt_delta: 0.05
+ltt_grid_low: [0.0005, 0.01, 20]
+ltt_grid_high: [0.01, 0.40, 40]
+ltt_grid_unique_count: 59
+bootstrap_replicates: 2000
+bootstrap_seed: 42
+ablation:
+  - {name: no_ppg, w: 10, d: 0, zero_channels: [2]}
+  - {name: no_abp, w: 10, d: 0, zero_channels: [3]}
+  - {name: ecg_only, w: 10, d: 0, zero_channels: [2, 3]}
+  - {name: w20_d0, w: 20, d: 0, zero_channels: []}
+  - {name: w10_d5, w: 10, d: 5, zero_channels: []}
+  - {name: w10_d10, w: 10, d: 10, zero_channels: []}

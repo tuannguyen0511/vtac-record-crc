@@ -1,0 +1,39 @@
+{
+  "figures": [
+    {
+      "item": "Fig1",
+      "location": "repo",
+      "path": "paper/source_figures/Fig1.pdf",
+      "sha256": "ccc57c345b5ba3998106246da270c75c8a77b5033d0946e10b214f0f37b6450e",
+      "source_kind": "archived_final_manuscript"
+    },
+    {
+      "item": "Fig2",
+      "location": "repo",
+      "path": "paper/source_figures/Fig2.pdf",
+      "sha256": "6d5f8e752428cbe99d58019b144e3fbab215903cbb8d7b9765ac88d1f1996806",
+      "source_kind": "archived_final_manuscript"
+    },
+    {
+      "item": "Fig3",
+      "location": "repo",
+      "path": "paper/source_figures/Fig3.pdf",
+      "sha256": "704727e743b5b8f93e79c95053bec084d3b244dfa0e419d7c65daf405ac5478b",
+      "source_kind": "archived_final_manuscript"
+    },
+    {
+      "item": "Fig4",
+      "location": "repo",
+      "path": "paper/source_figures/Fig4.pdf",
+      "sha256": "13b19e9a81b0c841835482d6669718e4e0be7e08e2dd8597fa09469da1868711",
+      "source_kind": "archived_final_manuscript"
+    },
+    {
+      "item": "Fig5",
+      "location": "repo",
+      "path": "paper/source_figures/Fig5.pdf",
+      "sha256": "191cfbfc7164b8c0aec3a934f23fa95b2f08c9566d2a62acf86a97b354310889",
+      "source_kind": "archived_final_manuscript"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+raw_dir: data_raw/vtac/1.1
+out_json: outputs/t01b_counts.json
+report_md: reports/P05-T01b_audit.md
+seed: 42
+t0: 75000
+window_s: 10

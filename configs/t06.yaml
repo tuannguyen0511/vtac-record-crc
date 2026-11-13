@@ -1,0 +1,97 @@
+step: P05-T06
+authorization: T06_AUTHORIZED
+branch: A
+pc: reference-workstation
+physical_gpu: 1
+cpu_threads: 8
+priority: BelowNormal
+backbone: resnet1d
+variant: A
+seeds:
+- 0
+- 1
+- 2
+- 3
+- 4
+window:
+  w: 10
+  d: 0
+  sample_rate_hz: 250
+expected_count:
+  test: 482
+  c2015_vt: 341
+expected_auroc:
+  test: 0.946049
+  c2015: 0.942304
+auroc_absolute_tolerance: 1.0e-06
+director_final_lock_sha256: c09b6cd952319950f65b57e64086ab691946ccabac84adb106efb2bc765299c8
+locked_alpha:
+- 0.01
+- 0.02
+- 0.05
+primary_alpha: 0.02
+ltt_tau: 0.09
+modality_strata:
+  S0: no PPG and no ABP
+  S1: exactly one of PPG or ABP
+  S2: both PPG and ABP
+a1:
+  theoretical_positive_record_counts:
+  - 50
+  - 100
+  - 150
+  - 188
+  - 300
+  - 500
+  - 1000
+  alphas:
+  - 0.01
+  - 0.02
+  - 0.05
+  subsample_positive_records:
+  - 50
+  - 100
+  - 150
+  - 188
+  subsample_replicates: 1000
+  t05a_reference_bootstrap_replicates: 2000
+  seed: 42
+  suppression_cutoff: 0.3
+  pac_alphas:
+  - 0.02
+  - 0.05
+  pac_delta: 0.05
+  t05a_anchor_lambda_percentiles:
+  - 7.61028e-05
+  - 0.01391
+  - 0.02774
+  t05a_anchor_absolute_tolerance:
+  - 5.0e-07
+  - 5.0e-05
+  - 5.0e-05
+a3:
+  replicates: 1000
+  seed: 42
+a4:
+  resampling: with_replacement_within_positive_negative_record_classes
+  prevalence_matching: closest_integer_allocation_for_expected_event_prevalence
+  prevalence:
+  - 0.1
+  - 0.2
+  - 0.286
+  - 0.4
+  - 0.6
+  bootstrap_replicates: 2000
+  seed: 42
+a5:
+  per_alarms: 1000
+  prevalence:
+    vtac: 0.286
+    c2015: 0.261
+  bootstrap_replicates: 2000
+  seed: 42
+privacy_small_cell: 10
+no_training: true
+no_test_rerun: true
+outputs_subdir: outputs/t06
+report_file: reports/P05-T06.md

@@ -1,0 +1,118 @@
+step: P05-T05b
+locked_by: Director
+locked_date: 2026-11-11
+basis:
+- G1 PASS (T02c)
+- G2 FAIL (T03)
+- T05a accepted after independent Director audit
+frozen_sha256:
+  locked_design_yaml: b977927a66ed50c69ea1f98c72e8bdb0639cd89e5949bf526b3dcc888261f819
+  common_tree: 90b7ed5d87d174e38ad801430341c4167f70a623ad8b8d5173229029aa9d9fa6
+  models_py: 4c082cbe1f14de69fda9b251e94970099fa900b31f37715c0ce156b45d2b070c
+  train_lib_py: 8015e99d240cbc87198e51c3c04cebc3758899f885be13f3d7f7ba9b08c581bc
+  t03_label_variants_py: d24c14151b49a3499d8264cef4245ee29fca517bc824bf28aa45307c0cdf1d19
+  t05a_conformal_ablation_py: 7a4a0ebd80306aaf0ffe5f4cc41ccf6d507c90dbecf5a3d449f4aab978bee23a
+  test_labels_parquet: 18226c52ae7614e026ce31e3eb7479fece6aa2d38d4bfde0f801d539921aac49
+model:
+  backbone: resnet1d
+  input:
+    w: 10
+    d: 0
+    slots:
+    - ECG1
+    - ECG2
+    - PPG
+    - ABP
+    mask: true
+  ensemble: mean of 5 seed logits, then sigmoid
+  suppression_rule: suppress alarm iff p < lambda (strict)
+  ltt_rule: suppress alarm iff p <= tau
+primary:
+  variant: A
+  alpha: 0.02
+  endpoint: false-alarm suppression on official test at locked lambda
+  co_report:
+  - test FNR with exact two-sided 95% Clopper-Pearson CI
+  - true alarms suppressed (<10 rule)
+lambda:
+  A:
+    0.01: 7.61028e-05
+    0.02: 0.0139079025
+    0.05: 0.0314556314
+  B:
+    0.01: 0.0052185981
+    0.02: 0.0195056216
+    0.05: 0.0688367641
+  C:
+    0.01: 0.0072529479
+    0.02: 0.0347598161
+    0.05: 0.0936145461
+  D:
+    0.01: 3.74778e-05
+    0.02: 0.0022762852
+    0.05: 0.0196282021
+  E:
+    0.01: 0.0569989312
+    0.02: 0.0960716463
+    0.05: 0.1504289553
+alpha_0005: infeasible (1/(188+1) = 0.00529 > 0.005); report as N/A
+ltt_comparator:
+  variant: A
+  alpha: 0.05
+  delta: 0.05
+  grid: 59 points (20 in [0.0005, 0.01] + 40 in [0.01, 0.40], unique)
+  tau: 0.09
+secondary:
+  variants:
+  - B
+  - C
+  - D
+  - E
+  h1_test: paired record-bootstrap (B=2000, seed 42) of test suppression B - A at
+    alpha 0.02, 95% CI
+  other_contrasts:
+  - C - A
+  - D - A
+  - E - A
+  h2: test FNR by contested 0/1 (votes_missing excluded), counts with <10 rule
+  stability: individual-seed suppression/FNR (min, max) for A at each alpha
+external_challenge2015:
+  data: data_raw/challenge-2015/1.0.0 training set, VT alarms only
+  model: ensemble A, same lambda (alpha 0.02 primary; 0.01, 0.05 secondary) and LTT
+    tau; no refit, no recalibration
+  report:
+  - AUROC
+  - AUPRC
+  - suppression
+  - FNR + Clopper-Pearson CI
+  - n VT alarms true/false
+  overlap_fingerprint: lead II last 60 s, 25 Hz, max cross-correlation vs VTaC train/val/test
+    signals; flag > 0.95
+  report_with_and_without_flagged_records: true
+checkpoints_sha256:
+  A_s0: ee31377401733ad57f4fbb2818dd3cd03b4c017735b1acb0e72b61bffacd496c
+  A_s1: fe6b8aa9b00967da2d97236e3f3ca873f669b31dc7e881d89540569a8956aabf
+  A_s2: 07f873c158a949e455386d89e62088386a6492b99a6e36710fead7d434b94359
+  A_s3: d3056c275f75a9a9e324e01a9f7ce8cc1dd080e9ce61ebfe0c02f5abf2fb4c42
+  A_s4: 96d1ef1e936f6d6f3a29de111fafaf08b13d17edea4165096ea68ff763cc0a4d
+  B_s0: 32c48744be1043980193e15ecb1522c32975b550b8e47b737df3e15c9b612b44
+  B_s1: e11569372fd1cab73b571b822c03e5d789420eafbf35b9b13ec845a76eec3059
+  B_s2: 5072649c9c10bac2905d1f31815bc1440e3e420d65e1757a4d1c6f1e1b0c92ac
+  B_s3: c80c489d397a3a2eaddd5f85fed30f6717f123f7b9329e835a998f563b2bbed8
+  B_s4: daff6c182ae65dd16eb9b30188105c8f162718f95a65dbc12f4a04e53d8c073f
+  C_s0: 25d449bf0cdf1c0099274cc2c637ddda25fcc7406eafbb7c59f8df50fde9c11f
+  C_s1: 6f5f3502b828f19627950ba2caf336180e82608f3e327eba8bcad3a9d58eca75
+  C_s2: ab3ad0a5cbcd23b23de04e7896f2cb47b05ca0a1b2c44b88c2292b0423d71672
+  C_s3: 7ee3f3de61c75f901439a02cb46f009e312a7106f09e0a24feee07ef345c95c3
+  C_s4: ce20a4043468c48c0cd16f1ff8eb60f844cf27f698c2bf2edb83440db5cef419
+  D_s0: 7760098f05b58ff71a868d0730733037c5fc198393c86859f39306f4f10b3b5b
+  D_s1: c0ba149535f12d9a3846d6d96d9adcc645babb0beb00d426506df1a4b2a678bd
+  D_s2: 8655bec4a3bb4db0645e6b74144608dde9d1558ae6dc1239d036a319099eebef
+  D_s3: 99846b9eeff47c699400ef43f9da18c6b23b37b0c06747f0595cd8629ac0e506
+  D_s4: d07138c66df8df9e7d180229ac437e2b8c57dd4eebe4d0d300f5260289fd4089
+  E_s0: 89bd32e87217bb5b9e35fe2d159be6b9839a75cea67fdc3cad2e6717ad18c700
+  E_s1: f66c4a1d1d6f6cfd8bddb596725d63175302ee31b3a6deeb5f580bc401b2f581
+  E_s2: 87b299acc40a30c6356ec337c8ec1e245b9c671bc375014b272c4815cbef550a
+  E_s3: 81198b933e630f6eb8a6f9a336ce3c162818737d22e19b1797b5c7624be0cbcb
+  E_s4: f3de0d1abf7d1f85daf15be6e3e020f5f2f326f16b47f4b0f43c8f762d745f00
+checkpoint_dir: outputs/t03/<variant>_s<seed>/ckpt.pt

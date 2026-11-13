@@ -1,0 +1,12 @@
+{
+  "calib_record_ids.txt": {
+    "record_count": 543,
+    "sha256": "ce5e8341f70b9656e3a70aea078064a1adce2621591f22ee89e43972f290dca6",
+    "source_meta_sha256": "a042bb4e1b09aae4abcaf2db475f6ce5371fe333619ec753ec6d82493ba7c988"
+  },
+  "fit_record_ids.txt": {
+    "record_count": 1265,
+    "sha256": "b93c9ec1a8c2355f6ea491f52dea4b14f7cd5b56d01dc046609e824f7d5d66ac",
+    "source_meta_sha256": "d3f8c8c7089046fe4b211a8a44e7f9115150efc2dae630c5a2f90be60aa18340"
+  }
+}

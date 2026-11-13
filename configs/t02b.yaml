@@ -1,0 +1,43 @@
+root: .
+raw_dir: data_raw/vtac/1.1
+proc_dir: cache/vtac/1.1/P05_v1
+project_dir: .
+t01b_counts_json: outputs/t01b_counts.json
+t01b_hf1_script: src/t01b_audit.py
+common_dir: common
+seed: 42
+n_jobs: 8
+fs_hz: 250
+t0_sample: 75000
+filter_context_s: 60
+calib_record_fraction: 0.3
+nan_missing_fraction: 0.2
+min_filtered_std: 1.0e-06
+clip_z: 10.0
+configs:
+- W: 10
+  D: 0
+- W: 20
+  D: 0
+- W: 10
+  D: 5
+- W: 10
+  D: 10
+expected_events:
+  train: 4060
+  val: 495
+  test: 482
+expected_records:
+  train: 1808
+  val: 226
+  test: 226
+  calib: 543
+expected_calib_positive_records: 188
+expected_votes_missing_train_val: 31
+max_event_y_prevalence_diff_pp: 2.0
+preclip_max_abs_mean: 0.0001
+preclip_max_abs_std_error: 0.0001
+postclip_max_abs_mean: 0.05
+postclip_max_std: 1.000001
+postclip_low_std_threshold: 0.95
+postclip_low_std_max_fraction: 0.05

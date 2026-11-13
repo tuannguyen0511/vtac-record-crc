@@ -1,0 +1,12 @@
+# P05-T03: Director-authorized validation-only label-variant comparison.
+# All model hyperparameters come unchanged from frozen configs/t02c.yaml.
+step: P05-T03
+backbone: resnet1d
+variants: [A, B, C, D, E]
+seeds: [0, 1, 2, 3, 4]
+alpha_primary: 0.02
+alpha_sensitivity: [0.01, 0.05]
+g2_min_mean_delta: 0.02
+g2_min_positive_seeds: 4
+label_smoothing: 0.10
+approved_gate: T03_AUTHORIZED

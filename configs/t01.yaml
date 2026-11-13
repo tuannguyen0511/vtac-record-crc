@@ -1,0 +1,6 @@
+url: https://physionet.org/files/vtac/1.1/
+out_dir: data_raw/vtac/1.1
+manifest: cache/vtac/1.1/manifest.parquet
+workers: 8
+seed: 0
+min_free_gb: 40

@@ -1,0 +1,131 @@
+step: P05-T02b
+preregistration_status: LOCKED_AFTER_DIRECTOR_ACCEPTANCE
+G0: CLOSED
+seed: 42
+calibration:
+  unit: record
+  algorithm: sklearn.train_test_split
+  test_size: 0.3
+  stratify: record contains >=1 y=1
+  n_calib_records: 543
+  n_positive_calib_records: 188
+  crc_minimum_alpha: 0.005291005291005291
+  primary_alpha: 0.02
+  alpha_grid:
+  - 0.01
+  - 0.02
+  - 0.05
+  alpha_0_005: 'infeasible: 1/(n+1)>0.005'
+  alpha_rule: n>=300 => 0.01; otherwise 0.02
+cache:
+  fs_hz: 250
+  t0_sample: 75000
+  context_s: 60
+  configurations:
+  - W: 10
+    D: 0
+  - W: 20
+    D: 0
+  - W: 10
+    D: 5
+  - W: 10
+    D: 10
+  slots:
+  - ECG1
+  - ECG2
+  - PPG
+  - ABP
+  dtype_x: float32
+  dtype_mask: bool
+  clip_z: 10.0
+  nan_threshold: 0.2
+  min_filtered_std: 1.0e-06
+  causal_cut_before_interpolation_filter: true
+normalization_qc_director_decision_2026_11_10:
+  option: A
+  method: 'D5 unchanged: per-window z-score, then single clip [-10,10]'
+  slot_presence_rule: D6 unchanged; no exclusion using postclip std
+  5a_hard_before_clip:
+    max_abs_mean: 0.0001
+    max_abs_std_minus_one: 0.0001
+    scope: every mask=1 window
+  5b_hard_after_clip:
+    max_std: 1.000001
+    max_abs_mean: 0.05
+    scope: every mask=1 window
+  5c_hard_after_clip:
+    std_below: 0.95
+    max_fraction: 0.05
+    grouping: each configuration (W,D) x slot; pooled fit/calib/val/test
+    denominator: mask=1 windows only
+  5d_report_only:
+    grouping: configuration x slot x fit/calib/val/test
+    clip_windows_fraction: true
+    clipped_samples_fraction: true
+    postclip_std_percentiles:
+    - 0.1
+    - 1
+    - 5
+    - 50
+    postclip_std_below_0_5_count: true
+    redact_counts_below: 10
+    test_statistics: waveforms only; no test labels
+  observed_max_preclip_abs_mean: 1.1175719312935447e-12
+  observed_max_preclip_abs_std_error: 3.3306690738754696e-16
+  observed_max_postclip_abs_mean: 0.02222220278032728
+  observed_max_postclip_std: 1.0000000242676546
+labels:
+  y: event_labels.csv decision True=1 False=0
+  valid_nonadjudicator_votes:
+    'True': 1.0
+    'False': 0.0
+    Uncertain: 0.5
+  ignored_votes:
+  - Reject
+  - Save for Later
+  q_mean: mean valid non-adjudication votes; fallback y if none retained
+  q_adj: (sum valid votes+y)/(n_votes+1) if adjudicated; else q_mean
+  contested: disagreement in True/False votes OR adjudication
+  HF1_K5: NO; do not infer any key mapping
+  votes_missing: no non-adjudication annotation rows after exact HF1 key matching
+  n_votes: count of retained True/False/Uncertain votes
+  ignored_ballots: Reject/Save for Later excluded from q; existing rows do not imply
+    missing key
+  missing_fallback: q_mean=q_adj=y; contested=0
+  votes_missing_train_val: 31
+  missing_use: retain fit/calib/eval; exclude H2
+  test_seal: test labels never opened before T05b
+stage_gates:
+  G1:
+    val_AUROC_min: 0.92
+    val_Challenge_Score_min: 75
+  G2:
+    val_B_minus_A_min: 0.02
+    B_better_than_A_seeds_min: 4
+    n_seeds: 5
+provenance_sha256:
+  t01b_hf1_script: e27f3b6005da21a4b3384bbffe9edf251e31ff87de3149f5cec88f82b7354d85
+  t02a_test_script: 0831056ca116af0c3979a2a26feb97e888aefce2dceefb92bb5346b7b3a78c27
+  common_source_tree: 90b7ed5d87d174e38ad801430341c4167f70a623ad8b8d5173229029aa9d9fa6
+  common_tree_hash_method: sorted relative *.py paths, each path+NUL+32-byte file
+    sha
+  common_files:
+    metrics.py: f0e07d1edcd7e4d1fd9bceb1b397af4392f73854e582e3257f7790a05fdf902e
+    bootstrap.py: ceda94c2422f31a1932068c0864a10831b7f6abbedbaea5af3625dc98d134f48
+    conformal.py: a7020f93ee7dbee9887662663b9c460b6ee92bd39202b0f16526046d2790fab1
+    report.py: 759ba2ecea23ea2b9ea050b71370676f0a3307c946421b9de88f8e282f40e7a3
+    tests/test_common.py: 0831056ca116af0c3979a2a26feb97e888aefce2dceefb92bb5346b7b3a78c27
+  meta_files:
+    fit_meta.parquet: d3f8c8c7089046fe4b211a8a44e7f9115150efc2dae630c5a2f90be60aa18340
+    calib_meta.parquet: a042bb4e1b09aae4abcaf2db475f6ce5371fe333619ec753ec6d82493ba7c988
+    val_meta.parquet: c3f2b70c372cee591e5c6b0bf01444b39e5f042b1fe6e9133659940e3ac9fcb2
+    test_meta.parquet: 12a7606bea3c71e9174b5ea806e5e2fb02e40f480794fd1bbbb5cd4a54fab3b4
+    test_labels.parquet: 18226c52ae7614e026ce31e3eb7479fece6aa2d38d4bfde0f801d539921aac49
+  t02b_script: d76ecfd571af07e0d9750c88e319395dbeac97c952aa92acede7756747735dd6
+  preprocess_lib_script: cbdcee3ba1747416b521cf2fce1fdd6730b57a965c2f9cd5bfc4cdfbf6b5b2b4
+  t02b_config: 88aa30e5332e4ca78f8d4dfcf93c38c7c7e4cd10826432c47dc287051fc316b3
+test_label_policy:
+  allowed_read: T05b ONLY
+  t02b_exception: isolated creation of sealed file
+  no_test_label_statistics: true
+  no_test_decision_print: true

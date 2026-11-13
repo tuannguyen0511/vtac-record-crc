@@ -1,0 +1,45 @@
+step: P05-T06b
+authorization: T06B_AUTHORIZED
+date: 2026-11-12
+pc: reference-workstation
+cpu_threads: 8
+priority: BelowNormal
+physical_gpu: 1
+backbone: resnet1d
+variant: A
+seeds:
+- 0
+- 1
+- 2
+- 3
+- 4
+window:
+  w: 10
+  d: 0
+alphas:
+- 0.02
+- 0.05
+bootstrap_seed: 42
+profile_rules:
+  P1: any signal named aVR
+  P2: no aVR and both I and III present
+  P3: all other cases
+  record: event majority; ties to P3
+reference_record_fraction:
+  P1:
+    expected: 0.68
+    tolerance: 0.02
+  P2:
+    expected: 0.28
+    tolerance: 0.02
+source_lock_sha256: c09b6cd952319950f65b57e64086ab691946ccabac84adb106efb2bc765299c8
+accepted_t06_source_sha256: bfec07cbaba13428a0771655f35265057743ba4c8c6dc290010c1df40a7d7d56
+output_dir: outputs/t06b
+report_file: reports/P05-T06b.md
+max_cpu_threads: 8
+posthoc_cohorts:
+- test
+- c2015
+no_refitting_existing_model: true
+training_scope: fit_P1_or_P2_only
+no_t05b_rerun: true

@@ -1,0 +1,7 @@
+# All paths relative to this repository directory; copy to paths.yaml.
+data_raw: data_raw
+data_proc: cache
+outputs: outputs
+paper_outputs: paper_outputs
+# Set to the file or directory corresponding to the legacy T01 external path.
+t01_external_resource: external_resource
