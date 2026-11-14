@@ -13,20 +13,29 @@ PROC=local('data_proc'); OUT=local('outputs'); RAW=local('data_raw')
 LOCK=yaml.safe_load((ROOT/'configs'/'final_lock.yaml').read_text(encoding='utf-8'))
 LAMBDA=float(LOCK['lambda']['A'][.02])
 
+
+ASSETS_DIR = None  # Selected only by --assets; no T02b cache is required.
+
 def scores(split,expected):
     if split in ('calib','val'):
-        meta=pd.read_parquet(PROC/f'{split}_meta.parquet')
+        if ASSETS_DIR is None:
+            meta=pd.read_parquet(PROC/f'{split}_meta.parquet')
+        else:
+            meta=pd.read_parquet(ASSETS_DIR/'labels_index.parquet')
+            meta=meta.loc[meta['split']==split].sort_values('idx').reset_index(drop=True)
         assert len(meta)==expected and meta['idx'].is_unique
         idx=meta['idx'].to_numpy()
         arr=[]
         for seed in range(5):
-            df=pd.read_parquet(OUT/'t03'/f'A_s{seed}'/f'scores_{split}.parquet')
+            base=OUT/'t03' if ASSETS_DIR is None else ASSETS_DIR/'scores'
+            df=pd.read_parquet(base/f'A_s{seed}'/f'scores_{split}.parquet')
             assert list(df.columns)==['idx','logit'] and df['idx'].is_unique
             arr.append(df.set_index('idx')['logit'].reindex(idx).to_numpy(float))
         y=meta['y'].to_numpy(int)
     else:
         n=expected
-        df=pd.read_parquet(OUT/'t06'/f'scores_{split}.parquet')
+        base=OUT if ASSETS_DIR is None else ASSETS_DIR/'scores'
+        df=pd.read_parquet(base/'t06'/f'scores_{split}.parquet')
         assert list(df.columns)==['idx','seed','logit'] and len(df)==n*6
         arr=[]
         for seed in range(5):
@@ -37,9 +46,16 @@ def scores(split,expected):
         assert len(ens)==n and np.array_equal(ens['idx'].to_numpy(),np.arange(n))
         assert np.allclose(np.mean(arr,axis=0),ens['logit'].to_numpy(float),atol=1e-12,rtol=0)
         if split=='test':
-            meta=pd.read_parquet(PROC/'test_meta.parquet'); lab=pd.read_parquet(PROC/'test_labels.parquet')
-            assert len(meta)==len(lab)==n and np.array_equal(meta['idx'].to_numpy(),lab['idx'].to_numpy())
-            y=lab['y'].to_numpy(int)
+            if ASSETS_DIR is None:
+                meta=pd.read_parquet(PROC/'test_meta.parquet')
+                lab=pd.read_parquet(PROC/'test_labels.parquet')
+                assert len(meta)==len(lab)==n and np.array_equal(meta['idx'].to_numpy(),lab['idx'].to_numpy())
+                y=lab['y'].to_numpy(int)
+            else:
+                labels=pd.read_parquet(ASSETS_DIR/'labels_index.parquet')
+                lab=labels.loc[labels['split']=='test'].sort_values('idx').reset_index(drop=True)
+                assert len(lab)==n and np.array_equal(lab['idx'].to_numpy(),np.arange(n))
+                y=lab['y'].to_numpy(int)
         else:
             root=RAW/'challenge-2015'/'1.0.0'
             f=root/'training'/'ALARMS' if (root/'training'/'ALARMS').is_file() else root/'ALARMS'
@@ -85,4 +101,11 @@ def main():
     n_ok=sum(x[1] for x in CHECKS)
     print(f'VERIFY_FINAL={"PASS" if n_ok==len(CHECKS) else "FAIL"} checks={n_ok}/{len(CHECKS)}',flush=True)
     return 0 if n_ok==len(CHECKS) else 2
-if __name__=='__main__':raise SystemExit(main())
+if __name__=='__main__':
+    parser=argparse.ArgumentParser(description='Verify locked key numbers from saved logits')
+    parser.add_argument('--assets',type=Path,default=None)
+    args=parser.parse_args()
+    if args.assets is not None:
+        ASSETS_DIR=args.assets.resolve()
+        assert (ASSETS_DIR/'labels_index.parquet').is_file()
+    raise SystemExit(main())

@@ -1,10 +1,10 @@
+# P05 final lock — written by Director 2026-11-11, BEFORE any test label is read.
+# T05b must hash this file into reports/PREREG_LOCK.md before creating TEST_OPENED.flag.
 step: P05-T05b
 locked_by: Director
 locked_date: 2026-11-11
-basis:
-- G1 PASS (T02c)
-- G2 FAIL (T03)
-- T05a accepted after independent Director audit
+basis: [G1 PASS (T02c), G2 FAIL (T03), T05a accepted after independent Director audit]
+
 frozen_sha256:
   locked_design_yaml: b977927a66ed50c69ea1f98c72e8bdb0639cd89e5949bf526b3dcc888261f819
   common_tree: 90b7ed5d87d174e38ad801430341c4167f70a623ad8b8d5173229029aa9d9fa6
@@ -13,82 +13,52 @@ frozen_sha256:
   t03_label_variants_py: d24c14151b49a3499d8264cef4245ee29fca517bc824bf28aa45307c0cdf1d19
   t05a_conformal_ablation_py: 7a4a0ebd80306aaf0ffe5f4cc41ccf6d507c90dbecf5a3d449f4aab978bee23a
   test_labels_parquet: 18226c52ae7614e026ce31e3eb7479fece6aa2d38d4bfde0f801d539921aac49
+
 model:
   backbone: resnet1d
-  input:
-    w: 10
-    d: 0
-    slots:
-    - ECG1
-    - ECG2
-    - PPG
-    - ABP
-    mask: true
-  ensemble: mean of 5 seed logits, then sigmoid
-  suppression_rule: suppress alarm iff p < lambda (strict)
-  ltt_rule: suppress alarm iff p <= tau
+  input: {w: 10, d: 0, slots: [ECG1, ECG2, PPG, ABP], mask: true}
+  ensemble: mean of 5 seed logits, then sigmoid  # p = sigmoid(mean logit)
+  suppression_rule: "suppress alarm iff p < lambda (strict)"
+  ltt_rule: "suppress alarm iff p <= tau"
+
 primary:
   variant: A
   alpha: 0.02
   endpoint: false-alarm suppression on official test at locked lambda
-  co_report:
-  - test FNR with exact two-sided 95% Clopper-Pearson CI
-  - true alarms suppressed (<10 rule)
+  co_report: [test FNR with exact two-sided 95% Clopper-Pearson CI, true alarms suppressed (<10 rule)]
+
+# lambda = crc_fnr_threshold(sigmoid(mean calib logit), y_calib, record_calib, alpha), record-level FNR CRC.
+# T05b must recompute every lambda from saved calib scores with frozen common and assert |diff| <= 1e-9
+# BEFORE reading test labels; any mismatch -> stop, do not open test.
 lambda:
-  A:
-    0.01: 7.61028e-05
-    0.02: 0.0139079025
-    0.05: 0.0314556314
-  B:
-    0.01: 0.0052185981
-    0.02: 0.0195056216
-    0.05: 0.0688367641
-  C:
-    0.01: 0.0072529479
-    0.02: 0.0347598161
-    0.05: 0.0936145461
-  D:
-    0.01: 3.74778e-05
-    0.02: 0.0022762852
-    0.05: 0.0196282021
-  E:
-    0.01: 0.0569989312
-    0.02: 0.0960716463
-    0.05: 0.1504289553
+  A: {0.01: 7.61028e-05, 0.02: 0.0139079025, 0.05: 0.0314556314}
+  B: {0.01: 0.0052185981, 0.02: 0.0195056216, 0.05: 0.0688367641}
+  C: {0.01: 0.0072529479, 0.02: 0.0347598161, 0.05: 0.0936145461}
+  D: {0.01: 3.74778e-05, 0.02: 0.0022762852, 0.05: 0.0196282021}
+  E: {0.01: 0.0569989312, 0.02: 0.0960716463, 0.05: 0.1504289553}
 alpha_0005: infeasible (1/(188+1) = 0.00529 > 0.005); report as N/A
+
 ltt_comparator:
   variant: A
   alpha: 0.05
   delta: 0.05
   grid: 59 points (20 in [0.0005, 0.01] + 40 in [0.01, 0.40], unique)
   tau: 0.09
+
 secondary:
-  variants:
-  - B
-  - C
-  - D
-  - E
-  h1_test: paired record-bootstrap (B=2000, seed 42) of test suppression B - A at
-    alpha 0.02, 95% CI
-  other_contrasts:
-  - C - A
-  - D - A
-  - E - A
+  variants: [B, C, D, E]   # all reported, none re-selected
+  h1_test: paired record-bootstrap (B=2000, seed 42) of test suppression B - A at alpha 0.02, 95% CI
+  other_contrasts: [C - A, D - A, E - A]   # descriptive, no multiplicity claim
   h2: test FNR by contested 0/1 (votes_missing excluded), counts with <10 rule
   stability: individual-seed suppression/FNR (min, max) for A at each alpha
+
 external_challenge2015:
   data: data_raw/challenge-2015/1.0.0 training set, VT alarms only
-  model: ensemble A, same lambda (alpha 0.02 primary; 0.01, 0.05 secondary) and LTT
-    tau; no refit, no recalibration
-  report:
-  - AUROC
-  - AUPRC
-  - suppression
-  - FNR + Clopper-Pearson CI
-  - n VT alarms true/false
-  overlap_fingerprint: lead II last 60 s, 25 Hz, max cross-correlation vs VTaC train/val/test
-    signals; flag > 0.95
+  model: ensemble A, same lambda (alpha 0.02 primary; 0.01, 0.05 secondary) and LTT tau; no refit, no recalibration
+  report: [AUROC, AUPRC, suppression, FNR + Clopper-Pearson CI, n VT alarms true/false]
+  overlap_fingerprint: lead II last 60 s, 25 Hz, max cross-correlation vs VTaC train/val/test signals; flag > 0.95
   report_with_and_without_flagged_records: true
+
 checkpoints_sha256:
   A_s0: ee31377401733ad57f4fbb2818dd3cd03b4c017735b1acb0e72b61bffacd496c
   A_s1: fe6b8aa9b00967da2d97236e3f3ca873f669b31dc7e881d89540569a8956aabf

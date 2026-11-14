@@ -30,9 +30,9 @@ is provided for a fresh workstation.
    `T01b → T02b (cache) → T03 (25 checkpoints) → T05a → T05b → T06/T06b → T07 → paper/`.
 4. Run `python scripts/verify_key_numbers.py` after arranging saved scores
    (see release assets). This verifier **does not** train or open T05b again.
-5. Run `python paper/make_figures.py --out paper_outputs` to export five
-   archived figures. This is an **export-only** smoke test, not a plot
-   regeneration from raw measurements. Compare with final manuscript source.
+5. Run `python paper/make_figures.py --out paper_outputs` to generate five
+   figures from the audited aggregate outputs. To export archived PDFs,
+   run `python paper/export_archived_figures.py --out paper_outputs`.
 
 **Important:** Original stage scripts contain fixed provenance and one-shot
 integrity guards. Sanitized release configurations do not reproduce the original
@@ -44,7 +44,7 @@ is the publication-ready inference and key-number check.
 ## Frozen CRC lock and one-time test
 
 - `configs/final_lock.yaml` original SHA-256: `c09b6cd952319950f65b57e64086ab691946ccabac84adb106efb2bc765299c8`.
-- `configs/final_lock.yaml` repository SHA-256: `a0afbb9a768d0b1a6304288f92d5d28c3fe14cca823bd6b054144a81336d0694`.
+- `configs/final_lock.yaml` repository SHA-256: `d99cf05b94b82cf7e76b90e3b9fa093623611578c9bb6a83970452d34ba905b6`.
 - Hashes may differ after sanitizing machine-dependent locations.
   All non-path scientific values must be unchanged; compare with the
   `P05-T08.md` build audit.
@@ -56,31 +56,27 @@ is the publication-ready inference and key-number check.
 
 ## Paper item mapping
 
-The following entries are placeholders for the **authors to confirm** against
-final `main.tex` and archived manuscript figures. Do not claim that every
-item is regenerated until its source is verified.
+The paths below were verified against the local frozen outputs and the manuscript.
+"Generated" means the named script writes the artifact. "Values transcribed"
+means the cited output supplies values entered in `main.tex`.
 
-| Paper item | Script | Output | Provenance |
+| Paper item | Generating script | Source in outputs/ | How produced |
 |---|---|---|---|
-| Table I | `paper/make_supplement_tables.py` | `paper_outputs/Table_I` | Archived-artifact export; verify against `main.tex` |
-| Table II | `paper/make_supplement_tables.py` | `paper_outputs/Table_II` | Archived-artifact export; verify against `main.tex` |
-| Table III | `paper/make_supplement_tables.py` | `paper_outputs/Table_III` | Archived-artifact export; verify against `main.tex` |
-| Fig. 1 | `paper/make_figures.py` | `paper_outputs/Fig._1` | Archived-artifact export; verify against `main.tex` |
-| Fig. 2 | `paper/make_figures.py` | `paper_outputs/Fig._2` | Archived-artifact export; verify against `main.tex` |
-| Fig. 3 | `paper/make_figures.py` | `paper_outputs/Fig._3` | Archived-artifact export; verify against `main.tex` |
-| Fig. 4 | `paper/make_figures.py` | `paper_outputs/Fig._4` | Archived-artifact export; verify against `main.tex` |
-| Fig. 5 | `paper/make_figures.py` | `paper_outputs/Fig._5` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S1 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S1` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S2 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S2` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S3 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S3` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S4 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S4` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S5 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S5` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S6 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S6` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S7 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S7` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Table S8 | `paper/make_supplement_tables.py` | `paper_outputs/Supplementary_Table_S8` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Fig. S1 | `paper/make_figures.py` | `paper_outputs/Supplementary_Fig._S1` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Fig. S2 | `paper/make_figures.py` | `paper_outputs/Supplementary_Fig._S2` | Archived-artifact export; verify against `main.tex` |
-| Supplementary Fig. S3 | `paper/make_figures.py` | `paper_outputs/Supplementary_Fig._S3` | Archived-artifact export; verify against `main.tex` |
+| Table I (tab:variants) | `src/t05b_final_test.py` | `outputs/t05b/summary.json` | values transcribed from outputs/t05b/summary.json |
+| Table II (tab:external) | `src/t05b_final_test.py` | `outputs/t05b/summary.json` | values transcribed from outputs/t05b/summary.json |
+| Fig. 1 (pipeline schematic) | `paper/make_figures.py` | none (schematic; no output data input) | generated |
+| Fig. 2 (CRC versus LTT) | `paper/make_figures.py` | `outputs/t05b/summary.json` | generated (numeric values transcribed from outputs/t05b/summary.json) |
+| Fig. 3 (calibration stability) | `paper/make_figures.py` | `outputs/t06_hf1/A1_bootstrap.parquet` | generated |
+| Fig. 4 (prevalence shift) | `paper/make_figures.py` | `outputs/t06/A4_prevalence.parquet` | generated |
+| Fig. 5 (acquisition profiles) | `paper/make_figures.py` | outputs/t06b/trained_cross_profile.parquet; outputs/t06b/profile_crc.parquet | generated |
+| Supplementary ablation table | `paper/make_supplement_tables.py` | outputs/t03/A_s0..A_s4/scores_val.parquet; outputs/t05a/ablation_summary.parquet | generated |
+| Supplementary tables: event CRC, bSQI, latency, missed cases | `paper/make_supplement_tables.py` | outputs/t07/E3_crc_event_vs_record.parquet; outputs/t07/E3_thresholds.parquet; outputs/t07/E5_tertiles.parquet; outputs/t07/E7_latency.parquet; outputs/t07/E7_preprocessing_latency.parquet; outputs/t07/E8_missed_summary.parquet | generated |
+| Fig. S1 (missed-case waveforms) | `src/t07_presubmission.py` | not distributed (waveforms of individual recordings; regenerate locally with src/t07_presubmission.py after downloading the data) | not distributed |
+| Fig. S2 (missed-case waveforms) | `src/t07_presubmission.py` | not distributed (waveforms of individual recordings; regenerate locally with src/t07_presubmission.py after downloading the data) | not distributed |
+| Fig. S3 (missed-case waveforms) | `src/t07_presubmission.py` | not distributed (waveforms of individual recordings; regenerate locally with src/t07_presubmission.py after downloading the data) | not distributed |
+| Narrative: test/external performance, CRC and baseline comparisons | `src/t05b_final_test.py` | `outputs/t05b/summary.json` | values transcribed from outputs/t05b/summary.json |
+| Narrative: supporting post-hoc sensitivity analysis | `src/t06_branch_a.py` | `outputs/t06/A4_prevalence.parquet` | values transcribed from outputs/t06/A4_prevalence.parquet |
+| Narrative: supporting post-hoc sensitivity analysis | `src/t06_hf1.py` | `outputs/t06_hf1/A1_bootstrap.parquet` | values transcribed from outputs/t06_hf1/A1_bootstrap.parquet |
 
 ## Pretrained checkpoints and saved scores
 
@@ -88,11 +84,10 @@ The 25 model checkpoints (A–E × seeds 0–4, approximately 4.5 MB each;
 approximately 113 MB total) and saved logits are staged **outside this repo**
 in `../release_assets/`. Upload them as a separate GitHub Release v1.0.0 asset,
 not as Git commits. Each score table contains only `idx`, `logit` and,
-where applicable, `seed`. The saved-score verifier uses the original cached
-metadata and separately downloaded Challenge 2015 labels.
+where applicable, `seed`. Run `python scripts/verify_key_numbers.py --assets ../release_assets` to verify without the T02b cache. Challenge 2015 labels still come from downloaded data.
 
 **Asset staging:** 25 checkpoint files,
-52 score parquet files.
+52 score parquet files, and `labels_index.parquet` (calib/val/test labels and public VTaC alarm IDs).
 The published ZIP should carry `release_assets/SHA256_MANIFEST.json`.
 
 ## Privacy and limitations
@@ -102,9 +97,9 @@ portrait is included. Avoid disclosing record identifiers in logs or issue
 reports. Saved-score test/C2015 results are POST-HOC.
 
 ## Code availability
-
-Code and archived model weights will be published by the authors after
-manual inspection. GitHub URL: TODO. Zenodo DOI: TODO (optional).
+Code: https://github.com/tuannguyen0511/vtac-record-crc. Model weights and saved
+scores are attached to the GitHub Release v1.0.0 (see "Pretrained checkpoints
+and saved scores" above). Zenodo DOI: none yet (optional).
 
 ### Checkpoint release integrity
 
@@ -122,3 +117,32 @@ workspace. The public copy uses `configs/paths.yaml:t01_external_resource`,
 which defaults to the relative placeholder `external_resource`. Set it to the
 corresponding local file or directory if executing this legacy T01 branch.
 Its role was not independently validated for end-to-end T01 portability.
+
+### HF5 reproducibility commands
+
+Run `python paper/make_supplement_tables.py --out paper_outputs/` to generate
+`supp_tab_ablation.tex` and `supplement_tables.tex` from paths configured in
+`configs/paths.yaml`. `paper/make_figures.py --out paper_outputs/` creates the
+five scientific PDFs (and PNG previews). `paper/export_archived_figures.py`
+only exports the frozen manuscript PDFs, without recomputing figure content.
+
+The `--assets` verifier reads the 25-seed saved scores and the
+`labels_index.parquet` file (public VTaC alarm identifiers, no waveforms).
+Download Challenge 2015 separately and set `data_raw` in `paths.yaml`.
+For local verification, no GPU is necessary. On a CPU-only computer, use
+PyTorch 2.0.1 CPU wheels (e.g., install `torch==2.0.1` from the CPU index)
+instead of `torch==2.0.1+cu117`; the locked saved-score verifier does not
+run a neural network and does not require a GPU.
+
+The checked `paths.yaml` may reference data directories outside the cloned
+repository using relative paths. New users should copy
+`configs/paths.example.yaml` and adjust all paths to their local installation.
+
+### Fig. 2 correction requiring author reconciliation
+
+The regenerated Fig. 2 uses 13.5% false-alarm suppression for Challenge 2015
+at CRC alpha=0.01. This is 34/252 = 13.492063% from the frozen T05b
+`outputs/t05b/summary.json`, rounded to one decimal place. The original
+release figure source had 13.4%. This release-only update does not modify
+manuscript files or archived PDFs. The authors must reconcile those artifacts
+with the verified value before final publication.
