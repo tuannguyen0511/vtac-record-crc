@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the article (under review at IEEE JBHI) and this software release."
-title: 'Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: A Preregistered Evaluation With Annotator Labels and External Validation'
+title: 'Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: A Pre-Specified, One-Shot Evaluation With Annotator Labels and External Validation'
 authors:
   - family-names: Nguyen Diep
     given-names: Quoc Tuan

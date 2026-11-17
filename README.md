@@ -1,6 +1,6 @@
 # VTaC record-level CRC for false VT alarm suppression
 
-**Manuscript title:** Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: A Preregistered Evaluation With Annotator Labels and External Validation. **Status:** Under review at IEEE Journal of Biomedical and Health Informatics (IEEE JBHI).
+**Manuscript title:** Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: A Pre-Specified, One-Shot Evaluation With Annotator Labels and External Validation. **Status:** Under review at IEEE Journal of Biomedical and Health Informatics (IEEE JBHI).
 
 This repository contains methods code and release metadata. It does **not**
 redistribute raw waveforms, annotated signals, processed caches, or patient data.
