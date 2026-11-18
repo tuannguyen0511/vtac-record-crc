@@ -1,0 +1,94 @@
+{
+  "cohorts": {
+    "calib": {
+      "bootstrap_requested": 2000,
+      "bootstrap_valid": 2000,
+      "lambda_A_002": 0.0139079025,
+      "lambda_B_002": 0.0195056216,
+      "n_true": 353,
+      "n_true_contested": 64,
+      "n_true_noncontested": 289,
+      "n_true_vote_missing": "<10",
+      "n_true_vote_present": 352,
+      "quantiles_prob": {
+        "1": {
+          "delta_B_minus_A": 0.008014167190063072,
+          "p_A": 0.01448171461342005,
+          "p_B": 0.022495881803483123
+        },
+        "10": {
+          "delta_B_minus_A": -0.0952830371367061,
+          "p_A": 0.302721113338565,
+          "p_B": 0.2074380762018589
+        },
+        "2": {
+          "delta_B_minus_A": 0.027999360913006793,
+          "p_A": 0.02607948393971927,
+          "p_B": 0.054078844852726064
+        },
+        "25": {
+          "delta_B_minus_A": -0.31730821290996397,
+          "p_A": 0.783185143991716,
+          "p_B": 0.46587693108175204
+        },
+        "5": {
+          "delta_B_minus_A": -0.0006761174201486281,
+          "p_A": 0.10130089808842482,
+          "p_B": 0.1006247806682762
+        }
+      },
+      "seed": 42,
+      "spearman_ci_record_bootstrap_95": [
+        -0.15936286749836115,
+        0.050866503469245886
+      ],
+      "spearman_logitA_minus_B_vs_vote_entropy": -0.06099889544321936
+    },
+    "val": {
+      "bootstrap_requested": 2000,
+      "bootstrap_valid": 2000,
+      "lambda_A_002": 0.0139079025,
+      "lambda_B_002": 0.0195056216,
+      "n_true": 141,
+      "n_true_contested": 15,
+      "n_true_noncontested": 126,
+      "n_true_vote_missing": "<10",
+      "n_true_vote_present": 138,
+      "quantiles_prob": {
+        "1": {
+          "delta_B_minus_A": 0.03416786211493289,
+          "p_A": 0.013915746022999831,
+          "p_B": 0.04808360813793272
+        },
+        "10": {
+          "delta_B_minus_A": -0.03439177754206235,
+          "p_A": 0.3797104161675739,
+          "p_B": 0.34531863862551154
+        },
+        "2": {
+          "delta_B_minus_A": -0.022125194323007587,
+          "p_A": 0.073145783034609,
+          "p_B": 0.051020588711601415
+        },
+        "25": {
+          "delta_B_minus_A": -0.22223182461945334,
+          "p_A": 0.7655702593405247,
+          "p_B": 0.5433384347210714
+        },
+        "5": {
+          "delta_B_minus_A": -0.01861756476236015,
+          "p_A": 0.21850687508354985,
+          "p_B": 0.1998893103211897
+        }
+      },
+      "seed": 42,
+      "spearman_ci_record_bootstrap_95": [
+        -0.3540098984468729,
+        -0.07650205430511894
+      ],
+      "spearman_logitA_minus_B_vs_vote_entropy": -0.22099279440018516
+    }
+  },
+  "entropy_definition": "H(q_mean) = -q_mean log(q_mean)-(1-q_mean) log(1-q_mean), binary mean-vote proxy; categorical entropy of raw True/False/Uncertain votes is NOT recoverable from the T02b cache. q_mean uses Uncertain=0.5, excludes Reject/Save for Later; votes_missing excluded.",
+  "label": "POST-HOC"
+}

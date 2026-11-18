@@ -1,0 +1,22 @@
+{
+  "alpha": 0.02,
+  "crc_upper_bound": 0.018518518518518517,
+  "fnr_k_n": "3/353",
+  "fractional_record_loss_sum": 2.5,
+  "lambda_display_original": 0.0139079025,
+  "lambda_full_float_hex": "0x1.c7bbf1288b4d7p-7",
+  "lambda_full_precision": 0.013907902482140617,
+  "note": "POST-HOC: strict p < exact CRC lambda; original outputs/t10/N5_record_multiplicity.csv preserved. The displayed locked decimal lambda is rounded and is not used at the calibration boundary.",
+  "original_n5_t10_sha256": "68c8fe8c7c391de16056a8acfefb121b1e7bff98af197a342f21d45254cad35b",
+  "positive_calibration_records": 188,
+  "record_mean_fnr": 0.013297872340425532,
+  "status": "POST-HOC_CORRECTION",
+  "suppressed_true_alarms": 3,
+  "target": "N5 calib all_positive_records",
+  "true_calibration_alarms": 353,
+  "unchanged_cohort_fnr": {
+    "c2015": "2/89",
+    "test": "1/137",
+    "val": "2/141"
+  }
+}

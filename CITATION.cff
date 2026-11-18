@@ -7,14 +7,10 @@ authors:
   - family-names: Huynh
     given-names: Hoang Nhut
   - family-names: Tran
-    given-names: Hong Duyen Trinh
-  - family-names: Tran
-    given-names: Anh Tu
-  - family-names: Tran
     given-names: Trung Nghia
   - family-names: Ching
     given-names: Congo Tak Shing
-version: 1.0.0
+version: 1.1.0
 date-released: '2026-11-13'
 license: MIT
 repository-code: 'https://github.com/tuannguyen0511/vtac-record-crc'

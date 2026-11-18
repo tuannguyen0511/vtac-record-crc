@@ -1,0 +1,18 @@
+{
+  "lambda_fcn": {
+    "0.01": 0.03850611990284411,
+    "0.02": 0.2269133538039572,
+    "0.05": 0.47362063485858436
+  },
+  "model": "FCNWang2017",
+  "note": "No benchmark weights downloaded. Model trained after test/Challenge labels opened.",
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "status": "POST-HOC",
+  "training": "Exact frozen T02c FCN schedule; fit hard A; val early-stop by AUPRC"
+}

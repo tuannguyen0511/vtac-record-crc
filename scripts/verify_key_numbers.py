@@ -98,6 +98,9 @@ def main():
     auc_e=result('C2015',ext,ye)
     emit('TEST_AUROC',f'{auc_t:.6f}','0.946049',abs(auc_t-.946049)<1e-6)
     emit('C2015_AUROC',f'{auc_e:.6f}','0.942304',abs(auc_e-.942304)<1e-6)
+    # P05-T11 added aggregate-only POST-HOC checks (original 12 checks unchanged).
+    from t11_verify_posthoc import check_posthoc
+    check_posthoc(ROOT, LOCK, emit)
     n_ok=sum(x[1] for x in CHECKS)
     print(f'VERIFY_FINAL={"PASS" if n_ok==len(CHECKS) else "FAIL"} checks={n_ok}/{len(CHECKS)}',flush=True)
     return 0 if n_ok==len(CHECKS) else 2

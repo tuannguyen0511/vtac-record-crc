@@ -1,0 +1,16 @@
+{
+  "matched_false_alarms": 1261,
+  "matched_record_count": 817,
+  "matched_true_alarms": 468,
+  "note": "Hashes are pseudonyms, not anonymization; do not publish this file.",
+  "privacy_note": "Digest of selected pseudonym list intentionally excluded from public summary.",
+  "seed": 42,
+  "selected_profile_counts": {
+    "P1": 517,
+    "P2": 243,
+    "P3": 57
+  },
+  "selected_record_count": 817,
+  "solver_status": "0",
+  "status": "POST-HOC"
+}

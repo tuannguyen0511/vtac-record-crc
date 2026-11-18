@@ -1,0 +1,42 @@
+{
+  "note": "Binary record-minimum order statistic is diagnostic, not substituted into Eq.1",
+  "rows": [
+    {
+      "alpha": 0.01,
+      "difference_fractional_minus_binary": 0.0,
+      "equal_1e_minus12": true,
+      "kstar": 1,
+      "lambda_fractional": 7.61027618683873e-05,
+      "orderstat_binary_minimum": 7.61027618683873e-05,
+      "partial_records_at_binary_orderstat": "<10",
+      "partial_records_at_fractional_lambda": "<10",
+      "scope": "POST-HOC",
+      "statement": "Thresholds coincide on these data"
+    },
+    {
+      "alpha": 0.02,
+      "difference_fractional_minus_binary": 0.00406453569275342,
+      "equal_1e_minus12": false,
+      "kstar": 3,
+      "lambda_fractional": 0.013907902482140617,
+      "orderstat_binary_minimum": 0.009843366789387197,
+      "partial_records_at_binary_orderstat": "<10",
+      "partial_records_at_fractional_lambda": "<10",
+      "scope": "POST-HOC",
+      "statement": "Thresholds differ: binary Beta analysis is not exact for fractional-loss CRC"
+    },
+    {
+      "alpha": 0.05,
+      "difference_fractional_minus_binary": 0.003717443344376667,
+      "equal_1e_minus12": false,
+      "kstar": 9,
+      "lambda_fractional": 0.03145563139813058,
+      "orderstat_binary_minimum": 0.027738188053753915,
+      "partial_records_at_binary_orderstat": "<10",
+      "partial_records_at_fractional_lambda": "<10",
+      "scope": "POST-HOC",
+      "statement": "Thresholds differ: binary Beta analysis is not exact for fractional-loss CRC"
+    }
+  ],
+  "status": "POST-HOC"
+}

@@ -2,9 +2,10 @@
 
 **Manuscript title:** Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: A Pre-Specified, One-Shot Evaluation With Annotator Labels and External Validation. **Status:** Under review at IEEE Journal of Biomedical and Health Informatics (IEEE JBHI).
 
+**Software version:** `1.1.0` (see `CITATION.cff`).
+
 This repository contains methods code and release metadata. It does **not**
 redistribute raw waveforms, annotated signals, processed caches, or patient data.
-The authors must review the release, complete the title/authors, and push it themselves.
 
 ## Data and licensing
 
@@ -82,13 +83,13 @@ means the cited output supplies values entered in `main.tex`.
 
 The 25 model checkpoints (A–E × seeds 0–4, approximately 4.5 MB each;
 approximately 113 MB total) and saved logits are staged **outside this repo**
-in `../release_assets/`. Upload them as a separate GitHub Release v1.0.0 asset,
-not as Git commits. Each score table contains only `idx`, `logit` and,
+in `../release_assets/`. These original weights are distributed as separate v1.0.0 release assets,
+not as files tracked by Git. Each score table contains only `idx`, `logit` and,
 where applicable, `seed`. Run `python scripts/verify_key_numbers.py --assets ../release_assets` to verify without the T02b cache. Challenge 2015 labels still come from downloaded data.
 
 **Asset staging:** 25 checkpoint files,
 52 score parquet files, and `labels_index.parquet` (calib/val/test labels and public VTaC alarm IDs).
-The published ZIP should carry `release_assets/SHA256_MANIFEST.json`.
+The release asset inventory is recorded in `release_assets/SHA256_MANIFEST.json`.
 
 ## Privacy and limitations
 
@@ -97,9 +98,11 @@ portrait is included. Avoid disclosing record identifiers in logs or issue
 reports. Saved-score test/C2015 results are POST-HOC.
 
 ## Code availability
-Code: https://github.com/tuannguyen0511/vtac-record-crc. Model weights and saved
-scores are attached to the GitHub Release v1.0.0 (see "Pretrained checkpoints
-and saved scores" above). Zenodo DOI: none yet (optional).
+Code: https://github.com/tuannguyen0511/vtac-record-crc.
+GitHub Release v1.0.0 retains the original `checkpoints.zip` and
+`saved_scores.zip` assets. The v1.1.0 release package additionally
+includes `checkpoints_t10.zip` for the post-hoc T10 analyses.
+Zenodo DOI: not assigned.
 
 ### Checkpoint release integrity
 
@@ -138,11 +141,51 @@ The checked `paths.yaml` may reference data directories outside the cloned
 repository using relative paths. New users should copy
 `configs/paths.example.yaml` and adjust all paths to their local installation.
 
-### Fig. 2 correction requiring author reconciliation
+### Figure 2 rounding correction
 
-The regenerated Fig. 2 uses 13.5% false-alarm suppression for Challenge 2015
-at CRC alpha=0.01. This is 34/252 = 13.492063% from the frozen T05b
-`outputs/t05b/summary.json`, rounded to one decimal place. The original
-release figure source had 13.4%. This release-only update does not modify
-manuscript files or archived PDFs. The authors must reconcile those artifacts
-with the verified value before final publication.
+At CRC alpha=0.01 on Challenge 2015, the earlier figure source
+displayed 13.4% false-alarm suppression. The verified count is
+34/252 = 13.492063%, which rounds to **13.5%** at one decimal place.
+The repository figure source uses 13.5%; the archived manuscript
+PDFs and original frozen results are unchanged.
+
+## Post-hoc analyses (T10/T11)
+
+**Scope:** Every T10/T11 analysis is **POST-HOC**. Both the official test
+labels and the Challenge 2015 labels had been opened before these analyses.
+No post-hoc threshold or model comparison replaces the original one-shot test.
+The T11 CALIB N5 correction uses the full floating-point CRC boundary and
+does not edit the earlier archived T10 table.
+
+| Manuscript item | Public aggregate artifact (all `results/t10/`) |
+|---|---|
+| Table II, mean recording-level FNR | `N8_record_fnr.csv` |
+| Supplementary S10.1, second FCN backbone | `N3_fcn_crc_results.csv`, `N3_summary.json` |
+| Supplementary S10.2, Fig. S4, suppression versus alpha | `N7_suppression_alpha.csv`, `N7_suppression_alpha.pdf` |
+| Supplementary S10.3, soft-label mechanism | `N1_summary.json`, `N1_cdf.pdf` |
+| Supplementary S10.4, matched-size control | `N11_evaluation.json`, `N11_plan.json` |
+| Challenge score at frozen thresholds | `N4_challenge_score.json` |
+| Fingerprint exclusion sensitivity | `N6_fingerprint.json` |
+| Fractional CRC versus binary-order statistic | `N9_fractional_vs_binary.json` |
+| Corrected N5 calibration record FNR | `N5_calib_corrected.json` |
+| Wall-time provenance | `T10_stage_runtime.json` |
+
+To check the original twelve locked quantities and the additional aggregate
+T10/T11 tables, run `python scripts/verify_key_numbers.py` or, after placing
+the published saved scores in a local directory,
+`python scripts/verify_key_numbers.py --assets <local-saved-scores-dir>`.
+The added checks are consistency checks of the published summary tables;
+they do **not** independently recompute neural-network predictions. The
+original twelve checks continue to use the saved logits and original labels.
+Challenge 2015 labels must be obtained separately from the lawful public source.
+
+N1 uses binary entropy of the cached mean vote probability, not the
+unavailable categorical entropy of the original annotator responses.
+Subgroup counts below 10 are redacted as `<10` (the whole-cohort FNR k/n
+is a stated exception). No individual waveform, record or event identifier,
+or pseudonym list is distributed with the new T10 summaries. The N11
+plan's digest of pseudonym selections is excluded from the public copy.
+The ten T10 checkpoint weights (5 FCN and 5 matched-size control) are staged
+**outside the Git repository** as `release_assets/checkpoints_t10.zip`.
+The additional T10 weights are packaged as the separate
+`checkpoints_t10.zip` asset for v1.1.0. Original v1.0.0 assets remain separate.

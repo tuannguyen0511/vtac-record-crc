@@ -1,0 +1,29 @@
+{
+  "rows": [
+    {
+      "FN": "<10",
+      "FN_FNR_WHOLE_COHORT": "2/89",
+      "FP": 96,
+      "TN": 156,
+      "TP": 87,
+      "alpha": 0.02,
+      "challenge_score": 0.6962750716332379,
+      "lambda": 0.0139079025,
+      "note": "Threshold was not optimized for Challenge score",
+      "scope": "C2015_341_VT_POST-HOC"
+    },
+    {
+      "FN": "<10",
+      "FN_FNR_WHOLE_COHORT": "3/89",
+      "FP": 71,
+      "TN": 181,
+      "TP": 86,
+      "alpha": 0.05,
+      "challenge_score": 0.7563739376770539,
+      "lambda": 0.0314556314,
+      "note": "Threshold was not optimized for Challenge score",
+      "scope": "C2015_341_VT_POST-HOC"
+    }
+  ],
+  "status": "POST-HOC"
+}

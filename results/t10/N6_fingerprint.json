@@ -1,0 +1,48 @@
+{
+  "note": "No pairwise results/record IDs/waveforms stored. Input provenance is the T05b FFT method. Counts below 10 are redacted (including known 0.95 one-record overlap).",
+  "rows": [
+    {
+      "false_remaining": 249,
+      "flagged_alarms": "<10",
+      "flagged_recordings": "<10",
+      "fnr": 0.02247191011235955,
+      "fnr_k_n": "<10",
+      "rule": "flag if max cross-correlation > threshold; not >= threshold",
+      "source": "recomputed in memory with exact T05b overlap function",
+      "status": "POST-HOC",
+      "suppression": 0.6184738955823293,
+      "suppression_k_n": "154/249",
+      "threshold": 0.9,
+      "true_remaining": 89
+    },
+    {
+      "false_remaining": 251,
+      "flagged_alarms": "<10",
+      "flagged_recordings": "<10",
+      "fnr": 0.02247191011235955,
+      "fnr_k_n": "<10",
+      "rule": "flag if max cross-correlation > threshold; not >= threshold",
+      "source": "recomputed in memory with exact T05b overlap function",
+      "status": "POST-HOC",
+      "suppression": 0.6175298804780877,
+      "suppression_k_n": "155/251",
+      "threshold": 0.95,
+      "true_remaining": 89
+    },
+    {
+      "false_remaining": 252,
+      "flagged_alarms": "<10",
+      "flagged_recordings": "<10",
+      "fnr": 0.02247191011235955,
+      "fnr_k_n": "<10",
+      "rule": "flag if max cross-correlation > threshold; not >= threshold",
+      "source": "recomputed in memory with exact T05b overlap function",
+      "status": "POST-HOC",
+      "suppression": 0.6190476190476191,
+      "suppression_k_n": "156/252",
+      "threshold": 0.98,
+      "true_remaining": 89
+    }
+  ],
+  "status": "POST-HOC"
+}
