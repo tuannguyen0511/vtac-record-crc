@@ -1,15 +1,9 @@
 cff-version: 1.2.0
 message: "If you use this code, please cite the article (under review at IEEE JBHI) and this software release."
-title: 'Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: A Pre-Specified, One-Shot Evaluation With Annotator Labels and External Validation'
+title: 'Record-Level Sensitivity Guarantees for Suppressing False Ventricular Tachycardia Alarms: Annotator Labels and External Validation'
 authors:
   - family-names: Nguyen Diep
     given-names: Quoc Tuan
-  - family-names: Huynh
-    given-names: Hoang Nhut
-  - family-names: Tran
-    given-names: Trung Nghia
-  - family-names: Ching
-    given-names: Congo Tak Shing
 version: 1.1.0
 date-released: '2026-11-13'
 license: MIT
